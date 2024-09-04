@@ -2,6 +2,7 @@
 #include "rlgl.h"
 #include "raymath.h"
 
+#include <iostream>
 #include <random>
 
 int main()
@@ -15,20 +16,30 @@ int main()
 
     SetTargetFPS(30);
 
-    int pY = GetScreenHeight() / 2;
-    int pX = GetScreenWidth() / 2;
+    int pY = screenHeight / 2;
+    int pX = screenWidth / 2;
 
     std::default_random_engine generator;
-    std::normal_distribution<double> distribution(0, (GetScreenWidth() / 2) - 50);
+    std::normal_distribution<double> distribution(screenWidth / 2, 100);
 
-    BeginDrawing();
+    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+
+    BeginTextureMode(target);
     ClearBackground(RAYWHITE);
-    EndDrawing();
+    EndTextureMode();
+
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         pX = distribution(generator);
+        // pY = distribution(generator);
+        // std::cout<<pX<<std::endl;
+        BeginTextureMode(target);
+        DrawCircle(pX,pY, 20, (Color){0, 0, 0, 10});
+        EndTextureMode();
+
         BeginDrawing();
-        DrawCircle(pX, pY, 20, (Color){ 0, 0, 0, 10 });
+        // ClearBackground(RAYWHITE);
+        DrawTextureRec(target.texture, (Rectangle) { 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2) { 0, 0 }, WHITE);
         EndDrawing();
     }
 
