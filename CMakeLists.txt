@@ -43,12 +43,27 @@ if (NOT "${FastNoise}_FOUND") # If there's none, fetch and build FastNoise2
 endif()
 
 # Our Project
-
-file( GLOB APP_SOURCES ./src/apps/*.c* )
+include_directories(./src/)
+SET (SRC_DIR ./src/apps/)
+CMAKE_PATH(APPEND APPS_SRC_ABS_DIR ${PROJECT_SOURCE_DIR} ${SRC_DIR} )
+file( GLOB_RECURSE APP_SOURCES ./src/apps/**.c* )
 foreach( appSourceFile ${APP_SOURCES} )
     # Cut off the file extension and directory path
-    get_filename_component( appName ${appSourceFile} NAME_WE )
+
+    get_filename_component(appDir ${appSourceFile} REALPATH )
+    file(RELATIVE_PATH appDir ${APPS_SRC_ABS_DIR} ${appDir})
+    get_filename_component( appDir ${appDir} DIRECTORY)
+    
+    get_filename_component(appName ${appSourceFile} NAME_WE )
+
+    # MESSAGE( STATUS "----- Folder: ${appDir} App: ${appName} -----" )
+    
     add_executable( ${appName} ${appSourceFile} )
+
+    set_target_properties( ${appName}
+      PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/${appDir}"
+  )
     # Make sure YourLib is linked to each app
     target_link_libraries( ${appName} raylib )
     target_link_libraries( ${appName} m )

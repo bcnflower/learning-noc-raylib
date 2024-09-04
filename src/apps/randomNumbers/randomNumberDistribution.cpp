@@ -3,7 +3,7 @@
 #include "rlgl.h"
 #include "raymath.h"
 
-#include "../libs/utils.h"
+#include "libs/utils.h"
 
 // #include "FastNoise/FastNoise.h"
 
