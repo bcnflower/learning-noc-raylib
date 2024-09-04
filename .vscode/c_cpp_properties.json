@@ -3,13 +3,14 @@
         {
             "name": "Linux",
             "includePath": [
-                "${default}",
-                "${workspaceFolder}/**"
+                "${default}"
+                // "${workspaceFolder}/**"
             ],
             "defines": [],
             "cStandard": "c17",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "linux-clang-x64"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json"
         }
     ],
     "version": 4
