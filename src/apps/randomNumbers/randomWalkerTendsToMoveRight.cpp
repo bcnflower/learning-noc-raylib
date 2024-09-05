@@ -19,14 +19,20 @@ int main()
     int pX = 10;
     // int walkDistance = 2;
 
-    BeginDrawing();
+    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    BeginTextureMode(target);
     ClearBackground(RAYWHITE);
-    EndDrawing();
+    EndTextureMode();
+
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        BeginDrawing();
+        BeginTextureMode(target);
         // DrawCircle(pX,pY,walkDistance,BLACK);
         DrawPixel(pX, pY, BLACK);
+        EndTextureMode();
+
+        BeginDrawing();
+        DrawTextureRec(target.texture, (Rectangle){0, 0, (float)target.texture.width, (float)-target.texture.height}, (Vector2){0, 0}, WHITE);
         EndDrawing();
 
         const double random = rand_0_1();
@@ -47,7 +53,7 @@ int main()
             pY--;
         }
     }
-
+    UnloadRenderTexture(target);
     CloseWindow();
     return 0;
 }

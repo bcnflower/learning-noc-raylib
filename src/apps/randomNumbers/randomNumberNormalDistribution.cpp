@@ -42,7 +42,7 @@ int main()
         DrawTextureRec(target.texture, (Rectangle) { 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2) { 0, 0 }, WHITE);
         EndDrawing();
     }
-
+    UnloadRenderTexture(target);
     CloseWindow();
     return 0;
 }

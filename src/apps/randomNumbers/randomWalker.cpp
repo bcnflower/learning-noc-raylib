@@ -21,19 +21,25 @@ int main()
     int pX = GetScreenWidth() / 2;
     int walkDistance = 2;
 
-    BeginDrawing();
+    RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    BeginTextureMode(target);
     ClearBackground(RAYWHITE);
-    EndDrawing();
+    EndTextureMode();
+
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        BeginDrawing();
+        BeginTextureMode(target);
         DrawCircle(pX, pY, walkDistance, BLACK);
-        EndDrawing();
+        EndTextureMode();
 
         pX += irandfrom(-walkDistance, walkDistance);
         pY += irandfrom(-walkDistance, walkDistance);
-    }
 
+        BeginDrawing();
+        DrawTextureRec(target.texture, (Rectangle) { 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2) { 0, 0 }, WHITE);
+        EndDrawing();
+    }
+    UnloadRenderTexture(target);
     CloseWindow();
     return 0;
 }
